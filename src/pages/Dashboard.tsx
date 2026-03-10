@@ -22,14 +22,13 @@ export const Dashboard = () => {
   }
 
   const myProperties = properties.filter(p => p.sellerId === user.id);
-  const likedProperties = properties.filter(p => p.likedBy?.includes(user.id));
   const savedProperties = properties.filter(p => user.savedProperties ? user.savedProperties.includes(p.id) : false);
 
   return (
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 pb-6 gap-4">
         <div className="flex items-center gap-4">
-          <div className="h-16 w-16 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
+          <div className="h-16 w-16 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
             <UserIcon className="h-8 w-8" />
           </div>
           <div>
@@ -41,7 +40,7 @@ export const Dashboard = () => {
           </div>
         </div>
         <Link to="/add-property">
-          <Button variant="primary" className="gap-2 w-full md:w-auto">
+          <Button className="gap-2 w-full md:w-auto bg-emerald-600 hover:bg-emerald-500 text-white border-none">
             <PlusSquare className="h-4 w-4" /> List New Property
           </Button>
         </Link>
@@ -50,30 +49,7 @@ export const Dashboard = () => {
       <div className="space-y-12">
         <section>
           <div className="flex items-center gap-2 mb-6">
-            <Heart className="h-5 w-5 text-red-500" />
-            <h2 className="text-xl font-semibold text-slate-900">Liked Properties</h2>
-          </div>
-          {likedProperties.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {likedProperties.map(property => (
-                <PropertyCard key={property.id} property={property} />
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-12 text-center">
-              <Heart className="mx-auto h-12 w-12 text-slate-300" />
-              <h3 className="mt-4 text-lg font-medium text-slate-900">No liked properties</h3>
-              <p className="mt-1 text-sm text-slate-500">Start browsing and like properties you love.</p>
-              <Link to="/" className="mt-6 inline-block">
-                <Button variant="outline">Browse Properties</Button>
-              </Link>
-            </div>
-          )}
-        </section>
-
-        <section>
-          <div className="flex items-center gap-2 mb-6">
-            <Bookmark className="h-5 w-5 text-indigo-500" />
+            <Bookmark className="h-5 w-5 text-emerald-500" />
             <h2 className="text-xl font-semibold text-slate-900">Saved Properties</h2>
           </div>
           {savedProperties.length > 0 ? (
@@ -96,7 +72,7 @@ export const Dashboard = () => {
 
         <section>
           <div className="flex items-center gap-2 mb-6">
-            <Building2 className="h-5 w-5 text-indigo-600" />
+            <Building2 className="h-5 w-5 text-emerald-600" />
             <h2 className="text-xl font-semibold text-slate-900">My Listings</h2>
           </div>
           {myProperties.length > 0 ? (
@@ -104,10 +80,9 @@ export const Dashboard = () => {
               {myProperties.map(property => (
                 <div key={property.id} className="relative group">
                   <PropertyCard property={property} />
-                  <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute top-12 left-3 z-10">
                     <Button
-                      variant={property.status === 'active' ? 'secondary' : 'primary'}
-                      className="h-8 px-3 text-xs shadow-sm"
+                      className={`h-8 px-3 text-xs shadow-sm border-none ${property.status === 'active' ? 'bg-slate-800 hover:bg-slate-700 text-white' : 'bg-emerald-600 hover:bg-emerald-500 text-white'}`}
                       onClick={() => updatePropertyStatus(property.id, property.status === 'active' ? 'sold' : 'active')}
                     >
                       Mark as {property.status === 'active' ? 'Sold' : 'Active'}

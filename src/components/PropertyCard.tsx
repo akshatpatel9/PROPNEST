@@ -12,7 +12,6 @@ interface PropertyCardProps {
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const { user, toggleSavedProperty } = useAuth();
-  const { toggleLike } = useProperties();
   const navigate = useNavigate();
 
   const isSaved = user?.savedProperties ? user.savedProperties.includes(property.id) : false;
@@ -26,18 +25,6 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
     toggleSavedProperty(property.id);
   };
 
-  const handleLike = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-    toggleLike(property.id, user.id);
-  };
-
-  const hasLiked = user && property.likedBy ? property.likedBy.includes(user.id) : false;
-  const likeCount = property.likedBy ? property.likedBy.length : 0;
-
   return (
     <div 
       className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all hover:shadow-md w-full cursor-pointer"
@@ -50,10 +37,16 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           referrerPolicy="no-referrer"
         />
-        {property.status === 'sold' && (
+        {property.status === 'sold' ? (
           <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center backdrop-blur-sm">
             <span className="rounded-full bg-red-500 px-4 py-1.5 text-sm font-bold uppercase tracking-wider text-white shadow-sm flex items-center gap-1">
               <Tag className="h-4 w-4" /> Sold
+            </span>
+          </div>
+        ) : (
+          <div className="absolute top-3 left-3 flex gap-2">
+            <span className="rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-sm flex items-center gap-1">
+              <Tag className="h-3 w-3" /> Active
             </span>
           </div>
         )}
@@ -107,19 +100,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
           )}
         </div>
 
-        <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-4">
-          <div className="flex items-center gap-1.5 text-sm text-slate-500">
-            <button 
-              onClick={(e) => {
-                e.stopPropagation();
-                handleLike(e);
-              }}
-              className={cn("flex items-center gap-1.5 transition-colors group/like", hasLiked ? "text-indigo-600" : "hover:text-indigo-600")}
-            >
-              <Heart className={cn("h-4 w-4 group-hover/like:scale-110 transition-transform", hasLiked && "fill-current")} />
-              <span className="font-medium">{likeCount}</span>
-            </button>
-          </div>
+        <div className="mt-4 flex items-center justify-end border-t border-slate-100 pt-4">
           <Button variant="outline" className="h-8 px-3 text-xs" onClick={(e) => { e.stopPropagation(); navigate(`/property/${property.id}`); }}>View Details</Button>
         </div>
       </div>

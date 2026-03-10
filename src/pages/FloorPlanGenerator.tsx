@@ -63,8 +63,8 @@ export const FloorPlanGenerator = () => {
   return (
     <div className="mx-auto max-w-4xl py-8">
       <div className="mb-12 text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100 mb-4">
-          <PenTool className="h-8 w-8 text-indigo-600" />
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 mb-4">
+          <PenTool className="h-8 w-8 text-emerald-600" />
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
           AI Floor Plan Generator
@@ -96,7 +96,7 @@ export const FloorPlanGenerator = () => {
               <textarea
                 required
                 rows={5}
-                className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 value={necessities}
                 onChange={e => setNecessities(e.target.value)}
                 placeholder="e.g. 3 bedrooms, 2 bathrooms, open kitchen, large living room, garage for 2 cars, garden space..."
@@ -131,7 +131,7 @@ export const FloorPlanGenerator = () => {
         <div className="rounded-3xl bg-slate-100 p-8 flex flex-col items-center justify-center min-h-[400px] ring-1 ring-slate-200 border-dashed border-2 border-slate-300">
           {loading ? (
             <div className="flex flex-col items-center text-slate-500 space-y-4">
-              <Loader2 className="h-12 w-12 animate-spin text-indigo-600" />
+              <Loader2 className="h-12 w-12 animate-spin text-emerald-600" />
               <p className="text-sm font-medium animate-pulse">Drafting your blueprint...</p>
             </div>
           ) : imageUrl ? (

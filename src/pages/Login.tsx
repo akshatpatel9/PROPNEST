@@ -45,8 +45,8 @@ export const Login = () => {
     <div className="flex min-h-[80vh] items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8 rounded-3xl bg-white p-10 shadow-xl ring-1 ring-slate-200">
         <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100">
-            <Home className="h-6 w-6 text-indigo-600" />
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100">
+            <Home className="h-6 w-6 text-emerald-600" />
           </div>
           <h2 className="mt-6 text-3xl font-extrabold tracking-tight text-slate-900">
             {isSignUp ? 'Create an account' : 'Welcome to RIGHT square'}
@@ -111,7 +111,7 @@ export const Login = () => {
           {!isSignUp && (
             <div className="flex items-center justify-end">
               <div className="text-sm">
-                <Link to="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <Link to="/forgot-password" className="font-medium text-emerald-600 hover:text-emerald-500">
                   Forgot your password?
                 </Link>
               </div>
@@ -132,7 +132,7 @@ export const Login = () => {
                 setError('');
                 setSuccessMsg('');
               }}
-              className="text-indigo-600 hover:text-indigo-500 font-medium"
+              className="text-emerald-600 hover:text-emerald-500 font-medium"
             >
               {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
             </button>

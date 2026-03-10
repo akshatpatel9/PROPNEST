@@ -6,6 +6,7 @@ import { Input, Button } from '../components/ui';
 import { CreditCard, CheckCircle2, Home, MapPin, DollarSign, Image as ImageIcon, FileText, Smartphone, Map as MapIcon, Phone } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
+import { supabase } from '../lib/supabase';
 
 // Fix Leaflet's default icon path issues
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -42,6 +43,9 @@ export const AddProperty = () => {
     imageUrl: '',
     sellerPhone: '',
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [mapPosition, setMapPosition] = useState<L.LatLng | null>(null);
 
   if (!user) {
@@ -62,36 +66,81 @@ export const AddProperty = () => {
     }, 1000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, imageUrl: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    addProperty({
-      sellerId: user.id,
-      sellerName: user.name,
-      sellerEmail: user.email,
-      sellerPhone: formData.sellerPhone,
-      title: formData.title,
-      description: formData.description,
-      price: Number(formData.price),
-      location: formData.location,
-      lat: mapPosition?.lat,
-      lng: mapPosition?.lng,
-      imageUrl: formData.imageUrl || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1000',
-    });
-    navigate('/dashboard');
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      let finalImageUrl = formData.imageUrl;
+
+      if (imageFile) {
+        const fileExt = imageFile.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `${user.id}/${fileName}`;
+
+        const { error: uploadError, data } = await supabase.storage
+          .from('property-images')
+          .upload(filePath, imageFile);
+
+        if (uploadError) {
+          console.error('Error uploading image:', uploadError);
+          // Fallback to base64 if storage fails (e.g., bucket doesn't exist)
+        } else if (data) {
+          const { data: publicUrlData } = supabase.storage
+            .from('property-images')
+            .getPublicUrl(filePath);
+          
+          finalImageUrl = publicUrlData.publicUrl;
+        }
+      }
+
+      await addProperty({
+        sellerId: user.id,
+        sellerName: user.name,
+        sellerEmail: user.email,
+        sellerPhone: formData.sellerPhone,
+        title: formData.title,
+        description: formData.description,
+        price: Number(formData.price),
+        location: formData.location,
+        lat: mapPosition?.lat,
+        lng: mapPosition?.lng,
+        imageUrl: finalImageUrl || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=1000',
+      });
+      navigate('/dashboard');
+    } catch (err: any) {
+      console.error('Error submitting property:', err);
+      setError(err.message || 'Failed to list property. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="mx-auto max-w-2xl py-8">
       <div className="mb-8 flex items-center justify-center space-x-4">
-        <div className={`flex items-center space-x-2 ${step === 1 ? 'text-indigo-600' : 'text-slate-400'}`}>
-          <div className={`flex h-8 w-8 items-center justify-center rounded-full border-2 ${step === 1 ? 'border-indigo-600 bg-indigo-50' : 'border-slate-300'}`}>
+        <div className={`flex items-center space-x-2 ${step === 1 ? 'text-emerald-600' : 'text-slate-400'}`}>
+          <div className={`flex h-8 w-8 items-center justify-center rounded-full border-2 ${step === 1 ? 'border-emerald-600 bg-emerald-50' : 'border-slate-300'}`}>
             1
           </div>
           <span className="font-medium">Payment</span>
         </div>
         <div className="h-0.5 w-12 bg-slate-200" />
-        <div className={`flex items-center space-x-2 ${step === 2 ? 'text-indigo-600' : 'text-slate-400'}`}>
-          <div className={`flex h-8 w-8 items-center justify-center rounded-full border-2 ${step === 2 ? 'border-indigo-600 bg-indigo-50' : 'border-slate-300'}`}>
+        <div className={`flex items-center space-x-2 ${step === 2 ? 'text-emerald-600' : 'text-slate-400'}`}>
+          <div className={`flex h-8 w-8 items-center justify-center rounded-full border-2 ${step === 2 ? 'border-emerald-600 bg-emerald-50' : 'border-slate-300'}`}>
             2
           </div>
           <span className="font-medium">Details</span>
@@ -102,26 +151,26 @@ export const AddProperty = () => {
         {step === 1 ? (
           <form onSubmit={handlePayment} className="space-y-6">
             <div className="text-center mb-8">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100 mb-4">
-                <CreditCard className="h-8 w-8 text-indigo-600" />
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 mb-4">
+                <CreditCard className="h-8 w-8 text-emerald-600" />
               </div>
               <h2 className="text-2xl font-bold text-slate-900">Listing Fee</h2>
               <p className="mt-2 text-slate-500">A one-time fee of ₹1,499 is required to list your property.</p>
-              <div className="mt-4 text-4xl font-extrabold text-indigo-600">₹1,499</div>
+              <div className="mt-4 text-4xl font-extrabold text-emerald-600">₹1,499</div>
             </div>
 
             <div className="flex gap-4 mb-6">
               <button
                 type="button"
                 onClick={() => setPaymentMethod('card')}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border-2 transition-colors ${paymentMethod === 'card' ? 'border-indigo-600 bg-indigo-50 text-indigo-700 font-semibold' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border-2 transition-colors ${paymentMethod === 'card' ? 'border-emerald-600 bg-emerald-50 text-emerald-700 font-semibold' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}
               >
                 <CreditCard className="h-5 w-5" /> Card
               </button>
               <button
                 type="button"
                 onClick={() => setPaymentMethod('upi')}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border-2 transition-colors ${paymentMethod === 'upi' ? 'border-indigo-600 bg-indigo-50 text-indigo-700 font-semibold' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border-2 transition-colors ${paymentMethod === 'upi' ? 'border-emerald-600 bg-emerald-50 text-emerald-700 font-semibold' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}
               >
                 <Smartphone className="h-5 w-5" /> UPI
               </button>
@@ -159,7 +208,7 @@ export const AddProperty = () => {
               </div>
             )}
 
-            <Button type="submit" variant="primary" className="w-full h-12 text-base mt-8">
+            <Button type="submit" className="w-full h-12 text-base mt-8 bg-emerald-600 hover:bg-emerald-500 text-white border-none">
               Pay ₹1,499 & Continue
             </Button>
           </form>
@@ -243,13 +292,42 @@ export const AddProperty = () => {
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
-                  <ImageIcon className="h-4 w-4" /> Image URL
+                  <ImageIcon className="h-4 w-4" /> Property Image
                 </label>
-                <Input
-                  value={formData.imageUrl}
-                  onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
-                  placeholder="https://example.com/image.jpg (optional)"
-                />
+                <div className="mt-1 flex justify-center rounded-xl border border-dashed border-slate-300 px-6 py-10">
+                  <div className="text-center">
+                    {formData.imageUrl ? (
+                      <div className="relative">
+                        <img src={formData.imageUrl} alt="Preview" className="mx-auto h-32 w-auto rounded-lg object-cover" />
+                        <button 
+                          type="button" 
+                          onClick={() => {
+                            setFormData({ ...formData, imageUrl: '' });
+                            setImageFile(null);
+                          }}
+                          className="mt-2 text-sm text-red-600 hover:text-red-500"
+                        >
+                          Remove image
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <ImageIcon className="mx-auto h-12 w-12 text-slate-300" aria-hidden="true" />
+                        <div className="mt-4 flex text-sm leading-6 text-slate-600 justify-center">
+                          <label
+                            htmlFor="file-upload"
+                            className="relative cursor-pointer rounded-md bg-white font-semibold text-emerald-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-emerald-600 focus-within:ring-offset-2 hover:text-emerald-500"
+                          >
+                            <span>Upload a file</span>
+                            <input id="file-upload" name="file-upload" type="file" className="sr-only" accept="image/*" onChange={handleImageUpload} />
+                          </label>
+                          <p className="pl-1">or drag and drop</p>
+                        </div>
+                        <p className="text-xs leading-5 text-slate-500">PNG, JPG, GIF up to 5MB</p>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
 
               <div>
@@ -259,7 +337,7 @@ export const AddProperty = () => {
                 <textarea
                   required
                   rows={4}
-                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   value={formData.description}
                   onChange={e => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Describe your property..."
@@ -267,8 +345,14 @@ export const AddProperty = () => {
               </div>
             </div>
 
-            <Button type="submit" variant="primary" className="w-full h-12 text-base mt-8">
-              List Property
+            {error && (
+              <div className="rounded-xl bg-red-50 p-4 text-sm text-red-600 border border-red-100 mb-4">
+                {error}
+              </div>
+            )}
+
+            <Button type="submit" disabled={isSubmitting} className="w-full h-12 text-base mt-8 bg-emerald-600 hover:bg-emerald-500 text-white border-none">
+              {isSubmitting ? 'Listing Property...' : 'List Property'}
             </Button>
           </form>
         )}

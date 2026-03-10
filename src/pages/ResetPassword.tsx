@@ -48,8 +48,8 @@ export const ResetPassword = () => {
     <div className="flex min-h-[80vh] items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8 rounded-3xl bg-white p-10 shadow-xl ring-1 ring-slate-200">
         <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100">
-            <KeyRound className="h-6 w-6 text-indigo-600" />
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100">
+            <KeyRound className="h-6 w-6 text-emerald-600" />
           </div>
           <h2 className="mt-6 text-3xl font-extrabold tracking-tight text-slate-900">
             Set New Password

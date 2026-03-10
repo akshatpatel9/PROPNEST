@@ -69,8 +69,8 @@ export const ImageAnalyzer = () => {
   return (
     <div className="mx-auto max-w-5xl py-8">
       <div className="mb-12 text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100 mb-4">
-          <ImageIcon className="h-8 w-8 text-indigo-600" />
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 mb-4">
+          <ImageIcon className="h-8 w-8 text-emerald-600" />
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
           AI Property Analyzer
@@ -122,7 +122,7 @@ export const ImageAnalyzer = () => {
               className="w-full h-full flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-2xl p-12 text-center cursor-pointer hover:bg-slate-50 transition-colors"
               onClick={() => fileInputRef.current?.click()}
             >
-              <UploadCloud className="h-16 w-16 text-indigo-400 mb-4" />
+              <UploadCloud className="h-16 w-16 text-emerald-400 mb-4" />
               <h3 className="text-lg font-medium text-slate-900">Upload Property Image</h3>
               <p className="text-sm text-slate-500 mt-2">Click to browse or drag and drop</p>
               <p className="text-xs text-slate-400 mt-1">PNG, JPG, WEBP up to 10MB</p>
@@ -138,13 +138,13 @@ export const ImageAnalyzer = () => {
 
         <div className="rounded-3xl bg-slate-50 p-8 min-h-[400px] ring-1 ring-slate-200">
           <div className="flex items-center gap-2 mb-6 border-b border-slate-200 pb-4">
-            <FileText className="h-5 w-5 text-indigo-600" />
+            <FileText className="h-5 w-5 text-emerald-600" />
             <h2 className="text-xl font-semibold text-slate-900">Analysis Results</h2>
           </div>
 
           {loading ? (
             <div className="flex flex-col items-center justify-center h-64 text-slate-500 space-y-4">
-              <Loader2 className="h-10 w-10 animate-spin text-indigo-600" />
+              <Loader2 className="h-10 w-10 animate-spin text-emerald-600" />
               <p className="text-sm font-medium animate-pulse">Our AI is examining the property details...</p>
             </div>
           ) : analysis ? (

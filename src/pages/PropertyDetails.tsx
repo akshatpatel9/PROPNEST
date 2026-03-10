@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useProperties } from '../context/PropertyContext';
 import { useAuth } from '../context/AuthContext';
-import { MapPin, Heart, ArrowLeft, Mail, User, Phone, Loader2 } from 'lucide-react';
+import { MapPin, Heart, ArrowLeft, Mail, User, Phone, Loader2, Tag } from 'lucide-react';
 import { Button, cn } from '../components/ui';
 import { supabase } from '../lib/supabase';
 
 export const PropertyDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { properties, toggleLike } = useProperties();
+  const { properties } = useProperties();
   const { user, toggleSavedProperty } = useAuth();
   
   const [message, setMessage] = useState('');
@@ -29,8 +29,6 @@ export const PropertyDetails = () => {
   }
 
   const isSaved = user?.savedProperties?.includes(property.id) || false;
-  const hasLiked = user && property.likedBy ? property.likedBy.includes(user.id) : false;
-  const likeCount = property.likedBy ? property.likedBy.length : 0;
 
   const handleSave = () => {
     if (!user) {
@@ -38,14 +36,6 @@ export const PropertyDetails = () => {
       return;
     }
     toggleSavedProperty(property.id);
-  };
-
-  const handleLike = () => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-    toggleLike(property.id, user.id);
   };
 
   const handleSendMessage = async () => {
@@ -79,7 +69,7 @@ export const PropertyDetails = () => {
     <div className="mx-auto max-w-5xl py-8 space-y-8">
       <button 
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors"
+        className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-emerald-600 transition-colors"
       >
         <ArrowLeft className="h-4 w-4" /> Back
       </button>
@@ -116,17 +106,19 @@ export const PropertyDetails = () => {
                 </div>
               </div>
               <div className="text-left sm:text-right">
-                <div className="text-3xl font-extrabold text-indigo-600">
+                <div className="text-3xl font-extrabold text-emerald-600">
                   ₹{property.price.toLocaleString('en-IN')}
                 </div>
-                <div className="mt-2 flex items-center sm:justify-end gap-1.5 text-sm text-slate-500">
-                  <button 
-                    onClick={handleLike}
-                    className={cn("flex items-center gap-1.5 transition-colors group/like", hasLiked ? "text-indigo-600" : "hover:text-indigo-600")}
-                  >
-                    <Heart className={cn("h-5 w-5 group-hover/like:scale-110 transition-transform", hasLiked && "fill-current")} />
-                    <span className="font-medium text-base">{likeCount} likes</span>
-                  </button>
+                <div className="mt-2 flex items-center sm:justify-end gap-1.5 text-sm">
+                  {property.status === 'sold' ? (
+                    <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-red-600 flex items-center gap-1">
+                      <Tag className="h-3 w-3" /> Sold
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-600 flex items-center gap-1">
+                      <Tag className="h-3 w-3" /> Active
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -145,7 +137,7 @@ export const PropertyDetails = () => {
             <h2 className="text-lg font-semibold text-slate-900 mb-4">Contact Seller</h2>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
                   <User className="h-5 w-5" />
                 </div>
                 <div>
@@ -186,7 +178,7 @@ export const PropertyDetails = () => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="I am interested in this property..."
-                    className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 min-h-[100px] resize-y"
+                    className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 min-h-[100px] resize-y"
                   />
                   <Button 
                     variant="primary" 
