@@ -159,7 +159,7 @@ export const PropertyDetails = () => {
                   <Mail className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-slate-900">{property.sellerEmail || 'contact@propnest.com'}</p>
+                  <p className="text-sm font-medium text-slate-900">{property.sellerEmail || 'contact@rightsquare.com'}</p>
                   <p className="text-xs text-slate-500">Email Address</p>
                 </div>
               </div>

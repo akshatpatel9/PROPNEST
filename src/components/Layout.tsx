@@ -19,7 +19,7 @@ export const Layout = () => {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-indigo-600">
             <Home className="h-6 w-6" />
-            <span className="text-xl font-bold tracking-tight">Propnest</span>
+            <span className="text-xl font-bold tracking-tight">RIGHT square</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
@@ -71,7 +71,7 @@ export const Layout = () => {
 
       <footer className="border-t border-slate-200 bg-white py-8 mt-auto">
         <div className="container mx-auto px-4 text-center text-slate-500 text-sm">
-          &copy; {new Date().getFullYear()} Propnest. All rights reserved.
+          &copy; {new Date().getFullYear()} RIGHT square. All rights reserved.
         </div>
       </footer>
     </div>

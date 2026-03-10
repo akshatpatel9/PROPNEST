@@ -101,7 +101,7 @@ export const PropertyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
     } catch (err) {
       console.error('Error fetching properties from Supabase, falling back to local data:', err);
-      const saved = localStorage.getItem('propnest_properties');
+      const saved = localStorage.getItem('rightsquare_properties');
       if (saved) {
         setProperties(JSON.parse(saved));
       } else {

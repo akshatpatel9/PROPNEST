@@ -49,7 +49,7 @@ export const Login = () => {
             <Home className="h-6 w-6 text-indigo-600" />
           </div>
           <h2 className="mt-6 text-3xl font-extrabold tracking-tight text-slate-900">
-            {isSignUp ? 'Create an account' : 'Welcome to Propnest'}
+            {isSignUp ? 'Create an account' : 'Welcome to RIGHT square'}
           </h2>
           <p className="mt-2 text-sm text-slate-600">
             {isSignUp ? 'Sign up to start browsing or listing properties.' : 'Sign in to start browsing or listing properties.'}
