@@ -10,6 +10,8 @@ import { AddProperty } from './pages/AddProperty';
 import { FloorPlanGenerator } from './pages/FloorPlanGenerator';
 import { ImageAnalyzer } from './pages/ImageAnalyzer';
 import { PropertyDetails } from './pages/PropertyDetails';
+import { ForgotPassword } from './pages/ForgotPassword';
+import { ResetPassword } from './pages/ResetPassword';
 
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="login" element={<Login />} />
+              <Route path="forgot-password" element={<ForgotPassword />} />
+              <Route path="reset-password" element={<ResetPassword />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="add-property" element={<AddProperty />} />
               <Route path="property/:id" element={<PropertyDetails />} />
