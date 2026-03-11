@@ -86,17 +86,23 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         </p>
 
         <div className="mt-3 space-y-1">
-          {property.sellerEmail && (
-            <div className="flex items-center gap-1.5 text-xs text-slate-500">
-              <Mail className="h-3 w-3 shrink-0" />
-              <span className="truncate">{property.sellerEmail}</span>
-            </div>
-          )}
-          {property.sellerPhone && (
-            <div className="flex items-center gap-1.5 text-xs text-slate-500">
-              <Phone className="h-3 w-3 shrink-0" />
-              <span className="truncate">{property.sellerPhone}</span>
-            </div>
+          {user ? (
+            <>
+              {property.sellerEmail && (
+                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                  <Mail className="h-3 w-3 shrink-0" />
+                  <span className="truncate">{property.sellerEmail}</span>
+                </div>
+              )}
+              {property.sellerPhone && (
+                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                  <Phone className="h-3 w-3 shrink-0" />
+                  <span className="truncate">{property.sellerPhone}</span>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="text-xs text-slate-500 italic">Log in to view owner details</div>
           )}
         </div>
 

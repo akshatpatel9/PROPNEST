@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useProperties } from '../context/PropertyContext';
 import { Input, Button } from '../components/ui';
-import { CreditCard, CheckCircle2, Home, MapPin, DollarSign, Image as ImageIcon, FileText, Smartphone, Map as MapIcon, Phone } from 'lucide-react';
+import { CreditCard, CheckCircle2, Home, MapPin, DollarSign, Image as ImageIcon, FileText, Smartphone, Map as MapIcon, Phone, User } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import { supabase } from '../lib/supabase';
@@ -42,6 +42,7 @@ export const AddProperty = () => {
     location: '',
     imageUrl: '',
     sellerPhone: '',
+    sellerName: '',
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -109,7 +110,7 @@ export const AddProperty = () => {
 
       await addProperty({
         sellerId: user.id,
-        sellerName: user.name,
+        sellerName: formData.sellerName || user.name,
         sellerEmail: user.email,
         sellerPhone: formData.sellerPhone,
         title: formData.title,
@@ -223,6 +224,18 @@ export const AddProperty = () => {
             </div>
 
             <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
+                  <User className="h-4 w-4" /> Owner's Name
+                </label>
+                <Input
+                  required
+                  value={formData.sellerName}
+                  onChange={e => setFormData({ ...formData, sellerName: e.target.value })}
+                  placeholder="e.g. John Doe"
+                />
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
                   <Home className="h-4 w-4" /> Property Title

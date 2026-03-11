@@ -28,6 +28,16 @@ export const PropertyDetails = () => {
     );
   }
 
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 text-center">
+        <h2 className="text-2xl font-bold text-slate-900">Authentication Required</h2>
+        <p className="mt-2 text-slate-500">Please log in to view property details and owner information.</p>
+        <Button variant="primary" className="mt-6" onClick={() => navigate('/login')}>Log In</Button>
+      </div>
+    );
+  }
+
   const isSaved = user?.savedProperties?.includes(property.id) || false;
 
   const handleSave = () => {
