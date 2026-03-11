@@ -24,7 +24,7 @@ export const Home = () => {
           <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl drop-shadow-lg">
             Find your perfect nest.
           </h1>
-          <p className="text-lg text-emerald-100 sm:text-xl drop-shadow-md">
+          <p className="text-lg text-white sm:text-xl drop-shadow-md">
             Browse thousands of properties, connect with sellers, and use AI to envision your future home.
           </p>
           <div className="mx-auto mt-8 flex max-w-xl items-center gap-2 rounded-2xl bg-white/90 backdrop-blur-sm p-2 shadow-xl focus-within:ring-2 focus-within:ring-emerald-500">

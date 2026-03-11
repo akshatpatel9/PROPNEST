@@ -20,7 +20,10 @@ export const ForgotPassword = () => {
       setSuccessMsg('');
       try {
         await resetPassword(email);
-        setSuccessMsg('Password reset link sent! Please check your email.');
+        setSuccessMsg('Password reset code sent! Redirecting...');
+        setTimeout(() => {
+          navigate(`/reset-password?email=${encodeURIComponent(email)}`);
+        }, 1500);
       } catch (err: any) {
         setError(err.message || 'Failed to send reset link');
       } finally {
@@ -40,7 +43,7 @@ export const ForgotPassword = () => {
             Reset Password
           </h2>
           <p className="mt-2 text-sm text-slate-600">
-            Enter your email address and we'll send you a link to reset your password.
+            Enter your email address and we'll send you a 6-digit code to reset your password.
           </p>
         </div>
         
@@ -79,7 +82,7 @@ export const ForgotPassword = () => {
 
           <div>
             <Button type="submit" variant="primary" className="w-full h-12 text-base" disabled={loading}>
-              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Send Reset Link'}
+              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Send Reset Code'}
             </Button>
           </div>
 

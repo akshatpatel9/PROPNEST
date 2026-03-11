@@ -28,23 +28,23 @@ export const Layout = () => {
 
       <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-slate-900/60 backdrop-blur-md">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 text-emerald-400">
+          <Link to="/" className="flex items-center gap-2 text-white">
             <Home className="h-6 w-6" />
             <span className="text-xl font-bold tracking-tight text-white">RIGHT square</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
-            <Link to="/" className="text-sm font-medium text-slate-300 hover:text-emerald-400 transition-colors">Browse</Link>
-            <Link to="/ai-floor-plan" className="text-sm font-medium text-slate-300 hover:text-emerald-400 transition-colors flex items-center gap-1">
+            <Link to="/" className="text-sm font-medium text-white hover:text-slate-200 transition-colors">Browse</Link>
+            <Link to="/ai-floor-plan" className="text-sm font-medium text-white hover:text-slate-200 transition-colors flex items-center gap-1">
               <PenTool className="h-4 w-4" /> AI Floor Plans
             </Link>
-            <Link to="/image-analyzer" className="text-sm font-medium text-slate-300 hover:text-emerald-400 transition-colors flex items-center gap-1">
+            <Link to="/image-analyzer" className="text-sm font-medium text-white hover:text-slate-200 transition-colors flex items-center gap-1">
               <ImageIcon className="h-4 w-4" /> Analyze Property
             </Link>
             
             {user ? (
               <>
-                <Link to="/dashboard" className="text-sm font-medium text-slate-300 hover:text-emerald-400 transition-colors flex items-center gap-1">
+                <Link to="/dashboard" className="text-sm font-medium text-white hover:text-slate-200 transition-colors flex items-center gap-1">
                   <LayoutDashboard className="h-4 w-4" /> Dashboard
                 </Link>
                 <Link to="/add-property">
@@ -53,11 +53,11 @@ export const Layout = () => {
                   </Button>
                 </Link>
                 <div className="flex items-center gap-4 ml-4 pl-4 border-l border-white/20">
-                  <span className="text-sm font-medium text-slate-200 flex items-center gap-2">
-                    <UserCircle className="h-5 w-5 text-emerald-400" />
+                  <span className="text-sm font-medium text-white flex items-center gap-2">
+                    <UserCircle className="h-5 w-5 text-white" />
                     {user.name}
                   </span>
-                  <Button variant="ghost" onClick={handleLogout} className="p-2 text-slate-300 hover:text-white hover:bg-white/10" aria-label="Logout">
+                  <Button variant="ghost" onClick={handleLogout} className="p-2 text-white hover:bg-white/10" aria-label="Logout">
                     <LogOut className="h-4 w-4" />
                   </Button>
                 </div>
@@ -65,7 +65,7 @@ export const Layout = () => {
             ) : (
               <div className="flex items-center gap-3 ml-4">
                 <Link to="/login">
-                  <Button variant="ghost" className="text-slate-300 hover:text-white hover:bg-white/10">Log in</Button>
+                  <Button variant="ghost" className="text-white hover:bg-white/10">Log in</Button>
                 </Link>
                 <Link to="/login">
                   <Button className="bg-emerald-600 hover:bg-emerald-500 text-white border-none">Sign up</Button>
@@ -81,7 +81,7 @@ export const Layout = () => {
       </main>
 
       <footer className="border-t border-white/10 bg-slate-900/80 backdrop-blur-md py-8 mt-auto relative z-10">
-        <div className="container mx-auto px-4 text-center text-slate-400 text-sm">
+        <div className="container mx-auto px-4 text-center text-white text-sm">
           &copy; {new Date().getFullYear()} RIGHT square. All rights reserved.
         </div>
       </footer>
